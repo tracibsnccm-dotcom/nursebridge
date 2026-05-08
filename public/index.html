@@ -1,0 +1,2520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NurseBridge™ — Nursing Student Retention & Readiness Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a6b72;
+    --navy-mid: #22838b;
+    --navy-light: #2e9da6;
+    --amber: #d96b52;
+    --amber-light: #e8886f;
+    --amber-pale: #fceae5;
+    --sage: #6b9e82;
+    --sage-light: #8fbfa3;
+    --cream: #faf6f0;
+    --warm-white: #fdfaf6;
+    --text-dark: #2c3e4a;
+    --text-mid: #4a5f6d;
+    --text-light: #7a909d;
+    --border: rgba(217,107,82,0.2);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #f2f7f5;
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(26,107,114,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 500;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+  }
+
+  .nav-logo span {
+    color: var(--amber);
+  }
+
+  .nav-tagline {
+    font-size: 0.65rem;
+    color: var(--sage-light);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-top: -2px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: rgba(247,243,237,0.7);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--amber-light); }
+
+  .nav-cta {
+    background: var(--amber) !important;
+    color: var(--navy) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2px;
+    font-weight: 500 !important;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 3rem 5rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 75% 35%, rgba(250,246,240,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 65% at 15% 75%, rgba(217,107,82,0.09) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(250,246,240,0.08) 0%, transparent 60%),
+      linear-gradient(155deg, #2d8a92 0%, #3aa0a9 45%, #2a8890 100%);
+  }
+
+  .hero-arc {
+    position: absolute;
+    right: -8%;
+    top: 10%;
+    width: 55%;
+    height: 80%;
+    border: 1px solid rgba(250,246,240,0.1);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero-arc-2 {
+    position: absolute;
+    right: -15%;
+    top: 5%;
+    width: 65%;
+    height: 90%;
+    border: 1px solid rgba(250,246,240,0.06);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sage-light);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--sage-light);
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5.5vw, 4.8rem);
+    font-weight: 300;
+    line-height: 1.08;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--amber-light);
+  }
+
+  .hero-trademark {
+    font-size: 0.9rem;
+    vertical-align: super;
+    color: var(--amber);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .hero-subtitle {
+    font-family: 'Lora', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: rgba(250,246,240,0.88);
+    margin: 1.8rem 0 2.8rem;
+    max-width: 560px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--amber);
+    color: var(--navy);
+    border: none;
+    padding: 0.85rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--amber-light); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--cream);
+    border: 1px solid rgba(247,243,237,0.3);
+    padding: 0.85rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: border-color 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-outline:hover { border-color: var(--amber-light); color: var(--amber-light); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--sage-light);
+    border: 1px solid rgba(90,128,104,0.35);
+    padding: 0.85rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: border-color 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-ghost:hover { border-color: var(--sage-light); color: var(--cream); }
+
+  .hero-bloom {
+    position: absolute;
+    bottom: -60px;
+    left: 0;
+    right: 0;
+    height: 160px;
+    background: linear-gradient(to bottom, transparent, rgba(242,247,245,0.35));
+    pointer-events: none;
+  }
+
+  .hero-domain {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 3rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: rgba(250,246,240,0.3);
+    text-transform: uppercase;
+  }
+
+  /* ── SECTION SHARED ── */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 40px;
+    height: 1px;
+    background: var(--amber);
+    opacity: 0.5;
+  }
+
+  /* ── SECTION 2: WHAT NURSEBRIDGE SUPPORTS ── */
+  .supports-section {
+    background: var(--cream);
+    color: var(--text-dark);
+    padding: 6rem 0;
+  }
+
+  .supports-section .section-label { color: var(--sage); }
+  .supports-section .section-label::after { background: var(--sage); }
+
+  .supports-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    color: var(--navy);
+    margin-bottom: 0.6rem;
+    line-height: 1.15;
+  }
+
+  .supports-intro {
+    font-family: 'Lora', serif;
+    color: var(--text-mid);
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 400;
+    max-width: 520px;
+    margin-bottom: 3rem;
+  }
+
+  .supports-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0 2px;
+  }
+
+  .supports-group {
+    border-top: 2px solid var(--sage);
+    padding-top: 1rem;
+  }
+
+  .supports-group-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    padding: 0 1.8rem 0.9rem;
+  }
+
+  .support-item {
+    padding: 1.6rem 1.8rem;
+    border-top: 1px solid rgba(13,30,58,0.1);
+    border-right: 1px solid rgba(13,30,58,0.08);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    transition: background 0.2s;
+  }
+
+  .support-item:hover { background: rgba(196,128,58,0.05); }
+
+  .support-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--sage);
+    border-radius: 50%;
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+
+  .support-text {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  /* ── OUTCOMES SECTION ── */
+  .outcomes-section {
+    background: var(--navy);
+    padding: 5rem 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .outcomes-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(107,158,130,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .outcomes-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .outcomes-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: start;
+    margin-bottom: 3.5rem;
+  }
+
+  .outcomes-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage-light);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .outcomes-label::after {
+    content: '';
+    flex: 1;
+    max-width: 30px;
+    height: 1px;
+    background: var(--sage-light);
+    opacity: 0.5;
+  }
+
+  .outcomes-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.15;
+  }
+
+  .outcomes-title em {
+    font-style: italic;
+    color: var(--amber-light);
+  }
+
+  .outcomes-context {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(250,246,240,0.7);
+    font-weight: 400;
+    padding-top: 0.8rem;
+  }
+
+  .outcomes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(250,246,240,0.06);
+    border: 1px solid rgba(250,246,240,0.06);
+    margin-bottom: 0;
+  }
+
+  .outcome-item {
+    background: rgba(26,107,114,0.3);
+    padding: 2.2rem 2.4rem;
+    transition: background 0.25s;
+    position: relative;
+  }
+
+  .outcome-item:hover {
+    background: rgba(26,107,114,0.55);
+  }
+
+  .outcome-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: rgba(250,246,240,0.1);
+    line-height: 1;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.02em;
+  }
+
+  .outcome-phrase {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 1.35;
+    margin-bottom: 0.7rem;
+    letter-spacing: 0.01em;
+  }
+
+  .outcome-detail {
+    font-family: 'Lora', serif;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: rgba(250,246,240,0.62);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .outcome-rule {
+    position: absolute;
+    top: 0;
+    left: 2.4rem;
+    right: 2.4rem;
+    height: 2px;
+    background: var(--sage);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .outcome-item:hover .outcome-rule {
+    opacity: 1;
+  }
+
+  /* Platform language */
+  .platform-language {
+    border-top: 1px solid rgba(250,246,240,0.08);
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .platform-language-rule {
+    padding-top: 0.35rem;
+  }
+
+  .platform-language-rule::before {
+    content: 'Platform Context';
+    display: block;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(250,246,240,0.3);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .platform-language-rule::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: rgba(250,246,240,0.15);
+    margin-top: 0.8rem;
+  }
+
+  .platform-language-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .platform-language-body p {
+    font-family: 'Lora', serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    line-height: 1.8;
+    color: rgba(250,246,240,0.45);
+    font-weight: 400;
+  }
+
+  .platform-language-body p:first-child {
+    color: rgba(250,246,240,0.6);
+    font-style: normal;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── DEMO SECTION SHARED ── */
+  .demo-section {
+    padding: 7rem 0;
+  }
+
+  .demo-section:nth-child(odd) {
+    background: #e8f2f0;
+  }
+
+  .demo-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+    margin-bottom: 3.5rem;
+  }
+
+  .demo-badge {
+    display: inline-block;
+    background: rgba(196,128,58,0.15);
+    border: 1px solid rgba(196,128,58,0.3);
+    color: var(--amber-light);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    margin-bottom: 1.2rem;
+  }
+
+  .demo-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    color: var(--text-dark);
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+
+  .demo-title em { font-style: italic; color: var(--amber-light); }
+
+  .demo-subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--sage);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .demo-desc {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--text-mid);
+    font-weight: 400;
+  }
+
+  .demo-features {
+    list-style: none;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .demo-features li {
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .demo-features li::before {
+    content: '→';
+    color: var(--sage);
+    font-size: 0.75rem;
+  }
+
+  /* ── INTERACTIVE WINDOW ── */
+  .demo-window {
+    background: #f8f4ee;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(196,128,58,0.15);
+    grid-column: 1 / -1;
+  }
+
+  .window-chrome {
+    background: #e8e3da;
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-bottom: 1px solid #d5cfc5;
+  }
+
+  .window-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+
+  .wd-red { background: #ff6158; }
+  .wd-yellow { background: #ffbd2e; }
+  .wd-green { background: #28c840; }
+
+  .window-url {
+    flex: 1;
+    background: #fff;
+    border-radius: 4px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.72rem;
+    color: #666;
+    font-family: 'DM Sans', sans-serif;
+    margin: 0 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .window-demo-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: rgba(196,128,58,0.15);
+    color: var(--amber);
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    border: 1px solid rgba(196,128,58,0.3);
+  }
+
+  .window-body {
+    padding: 2rem;
+    color: var(--text-dark);
+    min-height: 420px;
+  }
+
+  /* ── FIRE→ASH DEMO ── */
+  .fire-ash {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .fire-ash-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .fire-ash-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .fire-ash-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--navy);
+    font-weight: 500;
+  }
+
+  .fire-ash-title span { color: var(--amber); }
+
+  .fire-ash-intro {
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    margin-top: 0.4rem;
+    font-family: 'Lora', serif;
+    font-style: italic;
+  }
+
+  .burnout-meter {
+    margin: 1.2rem 0 1.5rem;
+    padding: 1.1rem 1.2rem 0.9rem;
+    background: var(--navy);
+    border-radius: 8px;
+  }
+
+  .bst-track {
+    display: flex;
+    gap: 4px;
+  }
+
+  .bst-segment {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .bst-bar {
+    width: 100%;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(250,246,240,0.1);
+    transition: background 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
+  }
+
+  .bst-segment[data-stage="0"] { --stage-color: #7ab99a; }   /* Spark — sage, bright, hopeful */
+  .bst-segment[data-stage="1"] { --stage-color: #9aafb8; }   /* Smoke — muted blue-grey, clouded */
+  .bst-segment[data-stage="2"] { --stage-color: #d96b52; }   /* Fire  — coral, heavy, consuming */
+  .bst-segment[data-stage="3"] { --stage-color: #8898a4; }   /* Ash   — soft slate, quiet, depleted */
+
+  .bst-segment.passed .bst-bar {
+    background: var(--stage-color);
+    opacity: 0.35;
+  }
+
+  .bst-segment[data-stage="0"].active .bst-bar {
+    background: var(--stage-color);
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(122,185,154,0.6);   /* Spark: light, activated glow */
+  }
+
+  .bst-segment[data-stage="1"].active .bst-bar {
+    background: var(--stage-color);
+    opacity: 0.85;
+    box-shadow: 0 0 6px rgba(154,175,184,0.35);   /* Smoke: muted, transitional */
+  }
+
+  .bst-segment[data-stage="2"].active .bst-bar {
+    background: var(--stage-color);
+    opacity: 1;
+    box-shadow: 0 0 9px rgba(217,107,82,0.5);     /* Fire: heavier, consuming */
+  }
+
+  .bst-segment[data-stage="3"].active .bst-bar {
+    background: var(--stage-color);
+    opacity: 0.7;
+    box-shadow: 0 0 4px rgba(136,152,164,0.2);    /* Ash: barely-there, depleted */
+  }
+
+  .bst-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(250,246,240,0.2);
+    transition: color 0.3s ease, font-weight 0.2s ease;
+    font-weight: 400;
+  }
+
+  .bst-segment.passed .bst-label { color: rgba(250,246,240,0.28); }
+  .bst-segment.active .bst-label { color: rgba(250,246,240,0.88); font-weight: 500; }
+  .bst-segment[data-stage="3"].active .bst-label { color: rgba(250,246,240,0.55); font-weight: 400; letter-spacing: 0.14em; } /* Ash: quieter label */
+
+  .fa-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .fa-question {
+    background: #fff;
+    border: 1px solid #e5ddd2;
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+  }
+
+  .fa-q-text {
+    font-size: 0.88rem;
+    color: var(--text-dark);
+    margin-bottom: 0.7rem;
+    font-family: 'Lora', serif;
+    line-height: 1.4;
+  }
+
+  .fa-scale {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .fa-btn {
+    flex: 1;
+    padding: 0.4rem 0;
+    background: #f0ebe3;
+    border: 1px solid #ddd5c8;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    color: var(--text-mid);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .fa-btn:hover { background: rgba(196,128,58,0.12); border-color: var(--amber); color: var(--amber); }
+  .fa-btn.selected { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+
+  .fa-scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.62rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+    padding: 0 2px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .fa-result {
+    background: var(--navy);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    display: none;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .fa-result.show { display: flex; }
+
+  .fa-result-icon { font-size: 1.5rem; flex-shrink: 0; }
+
+  .fa-result-level {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--amber-light);
+    margin-bottom: 0.3rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .fa-result-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+
+  .fa-result-text {
+    font-size: 0.82rem;
+    color: rgba(250,246,240,0.8);
+    line-height: 1.6;
+    font-family: 'Lora', serif;
+    font-style: italic;
+  }
+
+  .fa-reset {
+    display: none;
+    margin-top: 0.8rem;
+    font-size: 0.72rem;
+    color: var(--sage-light);
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'DM Sans', sans-serif;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .fa-reset.show { display: block; }
+
+  /* ── STRESS CHECK-IN DEMO ── */
+  .stress-checkin {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .sc-tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd5c8;
+    margin-bottom: 1.5rem;
+    gap: 0;
+  }
+
+  .sc-tab {
+    padding: 0.65rem 1.2rem;
+    font-size: 0.78rem;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.04em;
+    color: var(--text-light);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+
+  .sc-tab.active {
+    color: var(--navy);
+    border-color: var(--amber);
+    font-weight: 500;
+  }
+
+  .sc-panel { display: none; }
+  .sc-panel.active { display: block; }
+
+  .sc-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+  }
+
+  .sc-subheading {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    font-family: 'Lora', serif;
+    font-style: italic;
+    margin-bottom: 1.2rem;
+  }
+
+  .sc-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .sc-check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #ede7dc;
+    background: #fff;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .sc-check-item:hover { border-color: rgba(196,128,58,0.4); background: rgba(196,128,58,0.04); }
+  .sc-check-item.checked { border-color: var(--sage); background: rgba(90,128,104,0.07); }
+
+  .sc-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid #c5bfb4;
+    border-radius: 3px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .sc-check-item.checked .sc-checkbox {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: white;
+    font-size: 0.65rem;
+  }
+
+  .sc-check-label {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.3;
+  }
+
+  .sc-summary-bar {
+    margin-top: 1rem;
+    padding: 0.8rem 1rem;
+    background: var(--navy);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .sc-summary-text {
+    font-size: 0.8rem;
+    color: rgba(250,246,240,0.8);
+  }
+
+  .sc-summary-count {
+    font-size: 1.1rem;
+    color: var(--amber-light);
+    font-weight: 600;
+  }
+
+  /* Anxiety scale */
+  .sc-scale-row {
+    margin-bottom: 1.2rem;
+  }
+
+  .sc-scale-label {
+    font-size: 0.82rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    font-family: 'Lora', serif;
+    line-height: 1.4;
+  }
+
+  .sc-scale-btns {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  .sc-scale-btn {
+    width: 40px;
+    height: 38px;
+    border: 1px solid #ddd5c8;
+    background: #fff;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--text-mid);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sc-scale-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .sc-scale-btn.sel { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+
+  .sc-scale-range {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.62rem;
+    color: var(--text-light);
+    margin-top: 0.2rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Journal */
+  .sc-journal-prompt {
+    font-family: 'Lora', serif;
+    font-size: 0.92rem;
+    font-style: italic;
+    color: var(--text-mid);
+    background: rgba(196,128,58,0.07);
+    border-left: 3px solid var(--amber);
+    padding: 0.9rem 1.1rem;
+    border-radius: 0 5px 5px 0;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .sc-journal-area {
+    width: 100%;
+    min-height: 110px;
+    border: 1px solid #ddd5c8;
+    border-radius: 6px;
+    padding: 0.9rem;
+    font-family: 'Lora', serif;
+    font-size: 0.88rem;
+    color: var(--text-dark);
+    resize: vertical;
+    background: #fff;
+    transition: border-color 0.15s;
+    outline: none;
+  }
+
+  .sc-journal-area:focus { border-color: var(--sage); }
+
+  .sc-journal-area::placeholder { color: #b8b0a4; font-style: italic; }
+
+  .sc-guidance {
+    margin-top: 1rem;
+    padding: 0.9rem 1.1rem;
+    background: rgba(90,128,104,0.1);
+    border: 1px solid rgba(90,128,104,0.25);
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    display: none;
+    line-height: 1.6;
+  }
+
+  .sc-guidance.show { display: block; }
+  .sc-guidance strong { color: var(--sage); }
+
+  .sc-reveal-btn {
+    margin-top: 0.8rem;
+    padding: 0.6rem 1.4rem;
+    background: var(--navy);
+    color: var(--cream);
+    border: none;
+    border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background 0.15s;
+  }
+
+  .sc-reveal-btn:hover { background: var(--navy-light); }
+
+  /* ── ORIENTATION SECTION ── */
+  .orientation-section {
+    background: var(--cream);
+    color: var(--text-dark);
+    padding: 6rem 0;
+  }
+
+  .orientation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .orientation-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    line-height: 1.15;
+  }
+
+  .orientation-desc {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-mid);
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+  }
+
+  .orientation-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .orientation-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    font-size: 0.88rem;
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.5;
+  }
+
+  .orientation-points strong {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: var(--text-dark);
+    font-weight: 500;
+  }
+
+  .ori-point-detail {
+    font-family: 'Lora', serif;
+    font-size: 0.83rem;
+    font-style: italic;
+    color: var(--text-mid);
+    line-height: 1.65;
+    font-weight: 400;
+  }
+
+  .ori-num {
+    width: 26px;
+    height: 26px;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .orientation-card {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 2.5rem;
+    color: var(--cream);
+  }
+
+  .ori-card-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sage-light);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .ori-card-label::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--sage-light);
+  }
+
+  .ori-session-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .ori-session-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(247,243,237,0.08);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .ori-session-item:last-child { border-bottom: none; }
+
+  .ori-session-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(196,128,58,0.15);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .ori-session-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--cream);
+    margin-bottom: 0.2rem;
+    font-weight: 500;
+  }
+
+  .ori-session-detail {
+    font-size: 0.78rem;
+    color: rgba(250,246,240,0.6);
+    font-family: 'Lora', serif;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .ori-duration {
+    margin-top: 1.5rem;
+    padding: 0.8rem 1rem;
+    background: rgba(196,128,58,0.12);
+    border: 1px solid rgba(196,128,58,0.25);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: var(--amber-light);
+    font-family: 'DM Sans', sans-serif;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    padding: 7rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #1a6b72 0%, #22838b 100%);
+  }
+
+  .cta-accent {
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(196,128,58,0.1) 0%, transparent 60%);
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  .cta-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage-light);
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .cta-title em { font-style: italic; color: var(--amber-light); }
+
+  .cta-body {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    color: rgba(250,246,240,0.8);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .cta-divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(196,128,58,0.3);
+    margin: 0 auto 2rem;
+  }
+
+  .cta-footnote {
+    font-size: 0.75rem;
+    color: rgba(247,243,237,0.3);
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #124d53;
+    padding: 2rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(247,243,237,0.05);
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: rgba(250,246,240,0.6);
+  }
+
+  .footer-brand span { color: var(--amber-light); opacity: 0.9; }
+
+  .footer-copy {
+    font-size: 0.7rem;
+    color: rgba(247,243,237,0.2);
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.06em;
+  }
+
+  .footer-domain {
+    font-size: 0.7rem;
+    color: rgba(247,243,237,0.2);
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── DISCLAIMER SECTION (PRIMARY) ── */
+  .disclaimer-section {
+    background: var(--warm-white);
+    padding: 5rem 0;
+    border-top: 1px solid rgba(107,158,130,0.15);
+  }
+
+  .disclaimer-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  .disclaimer-eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .disclaimer-eyebrow::after {
+    content: '';
+    flex: 1;
+    max-width: 36px;
+    height: 1px;
+    background: var(--sage);
+    opacity: 0.4;
+  }
+
+  .disclaimer-intro {
+    font-family: 'Lora', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--text-mid);
+    margin-bottom: 2.5rem;
+    max-width: 720px;
+  }
+
+  .disclaimer-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: rgba(107,158,130,0.12);
+    border: 1px solid rgba(107,158,130,0.12);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+
+  .disclaimer-panel {
+    background: var(--warm-white);
+    padding: 1.6rem 1.8rem;
+  }
+
+  .disclaimer-panel-rule {
+    width: 24px;
+    height: 2px;
+    background: var(--sage);
+    margin-bottom: 1rem;
+    border-radius: 1px;
+  }
+
+  .disclaimer-panel-rule.coral { background: var(--amber); }
+  .disclaimer-panel-rule.teal  { background: var(--navy); }
+
+  .disclaimer-panel-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dark);
+    margin-bottom: 0.8rem;
+  }
+
+  .disclaimer-panel-body {
+    font-family: 'Lora', serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    line-height: 1.75;
+    color: var(--text-light);
+    font-weight: 400;
+  }
+
+  .disclaimer-support-block {
+    background: rgba(107,158,130,0.06);
+    border: 1px solid rgba(107,158,130,0.18);
+    border-radius: 6px;
+    padding: 1.6rem 2rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.2rem;
+    align-items: start;
+  }
+
+  .disclaimer-support-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(107,158,130,0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .disclaimer-support-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+  }
+
+  .disclaimer-support-body {
+    font-family: 'Lora', serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    line-height: 1.75;
+    color: var(--text-light);
+    font-weight: 400;
+  }
+
+  .disclaimer-support-resources {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .disclaimer-resource-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: var(--sage);
+    border: 1px solid rgba(107,158,130,0.3);
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── ABBREVIATED TOOL DISCLAIMER ── */
+  .tool-disclaimer {
+    margin-top: 1.2rem;
+    padding: 0.9rem 1.1rem;
+    background: rgba(107,158,130,0.05);
+    border-left: 2px solid rgba(107,158,130,0.3);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .tool-disclaimer-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    color: #9aafba;
+    line-height: 1.65;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .tool-disclaimer-text strong {
+    color: #7a9faa;
+    font-weight: 500;
+  }
+
+  /* ── FIRE→ASH CONTEXTUAL NOTE ── */
+  .fa-context-note {
+    margin-top: 0.9rem;
+    padding: 0.75rem 1rem;
+    background: rgba(250,246,240,0.06);
+    border: 1px solid rgba(250,246,240,0.1);
+    border-radius: 5px;
+    display: none;
+  }
+
+  .fa-context-note.show { display: block; }
+
+  .fa-context-note-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    color: rgba(250,246,240,0.38);
+    line-height: 1.65;
+    letter-spacing: 0.01em;
+  }
+
+  @media (max-width: 860px) {
+    .disclaimer-panels { grid-template-columns: 1fr; }
+    .disclaimer-inner { padding: 0 1.5rem; }
+  }
+  @media (max-width: 860px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .section-inner { padding: 0 1.5rem; }
+    .demo-header { grid-template-columns: 1fr; gap: 2rem; }
+    .orientation-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+
+  /* ── ENTRANCE ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow { animation: fadeUp 0.7s ease both; }
+  .hero-title { animation: fadeUp 0.7s 0.12s ease both; }
+  .hero-subtitle { animation: fadeUp 0.7s 0.22s ease both; }
+  .hero-actions { animation: fadeUp 0.7s 0.32s ease both; }
+
+  /* ── GRADIENT DRIFT ── */
+  @keyframes driftA {
+    0%   { opacity: 0.0;  transform: translate3d(0px, 0px, 0); }
+    50%  { opacity: 0.13; transform: translate3d(6px, -5px, 0); }
+    100% { opacity: 0.04; transform: translate3d(3px, -8px, 0); }
+  }
+
+  @keyframes driftB {
+    0%   { opacity: 0.07; transform: translate3d(0px, 0px, 0); }
+    40%  { opacity: 0.0;  transform: translate3d(-5px, 4px, 0); }
+    100% { opacity: 0.11; transform: translate3d(-8px, 6px, 0); }
+  }
+
+  @keyframes driftC {
+    0%   { opacity: 0.05; transform: translate3d(0px, 0px, 0); }
+    60%  { opacity: 0.14; transform: translate3d(5px, 6px, 0); }
+    100% { opacity: 0.02; transform: translate3d(8px, 3px, 0); }
+  }
+
+  @keyframes driftD {
+    0%   { opacity: 0.02; transform: translate3d(0px, 0px, 0); }
+    45%  { opacity: 0.09; transform: translate3d(-4px, -6px, 0); }
+    100% { opacity: 0.0;  transform: translate3d(-7px, -3px, 0); }
+  }
+
+  .drift-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    will-change: opacity, transform;
+  }
+
+  /* Hero drift layers */
+  .drift-a {
+    background: radial-gradient(ellipse 65% 55% at 78% 25%, rgba(180,230,220,1) 0%, transparent 65%);
+    animation: driftA 20s ease-in-out infinite alternate;
+  }
+
+  .drift-b {
+    background: radial-gradient(ellipse 50% 60% at 15% 70%, rgba(250,240,228,1) 0%, transparent 60%);
+    animation: driftB 10s ease-in-out 2s infinite alternate;
+  }
+
+  .drift-c {
+    background: radial-gradient(ellipse 45% 40% at 55% 55%, rgba(160,215,200,0.7) 0%, transparent 55%);
+    animation: driftC 22s ease-in-out 5s infinite alternate;
+  }
+
+  .drift-d {
+    background: radial-gradient(ellipse 60% 35% at 30% 20%, rgba(250,235,215,1) 0%, transparent 60%);
+    animation: driftD 11s ease-in-out 1.5s infinite alternate;
+  }
+
+  /* CTA drift layers — same mechanic, slightly warmer tones */
+  .cta-drift-a {
+    background: radial-gradient(ellipse 70% 50% at 80% 30%, rgba(180,230,220,1) 0%, transparent 60%);
+    animation: driftA 20s ease-in-out infinite alternate;
+  }
+
+  .cta-drift-b {
+    background: radial-gradient(ellipse 55% 65% at 10% 75%, rgba(250,230,210,1) 0%, transparent 55%);
+    animation: driftB 11s ease-in-out 3s infinite alternate;
+  }
+
+  .cta-drift-c {
+    background: radial-gradient(ellipse 40% 45% at 50% 50%, rgba(217,107,82,1) 0%, transparent 60%);
+    animation: driftC 22s ease-in-out 6s infinite alternate;
+    opacity: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">Nurse<span>Bridge</span>™</div>
+    <div class="nav-tagline">nursebridgeedu.com</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#supports">What We Support</a></li>
+    <li><a href="#demo-burnout">Burnout Demo</a></li>
+    <li><a href="#demo-stress">Stress Demo</a></li>
+    <li><a href="#orientation">Orientation</a></li>
+    <li><a href="#contact" class="nav-cta">Request Walkthrough</a></li>
+  </ul>
+</nav>
+
+<!-- ── SECTION 1: HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-arc"></div>
+  <div class="hero-arc-2"></div>
+  <!-- Gradient drift layers -->
+  <div class="drift-layer drift-a"></div>
+  <div class="drift-layer drift-b"></div>
+  <div class="drift-layer drift-c"></div>
+  <div class="drift-layer drift-d"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Nursing Student Retention & Readiness Platform</div>
+    <h1 class="hero-title">
+      Nurse<em>Bridge</em><sup class="hero-trademark">™</sup>
+    </h1>
+    <p class="hero-subtitle">
+      NurseBridge helps nursing programs support students before the burnout, overwhelm, and instability that contribute to early attrition and disengagement.
+    </p>
+    <div class="hero-actions">
+      <a href="#demo-burnout" class="btn-primary">Explore Demo</a>
+      <a href="#demo-burnout" class="btn-outline">Interactive Preview</a>
+      <a href="#contact" class="btn-ghost">Request Full Walkthrough</a>
+    </div>
+  </div>
+  <div class="hero-domain">nursebridgeedu.com</div>
+  <div class="hero-bloom"></div>
+</section>
+
+<!-- ── SECTION 2: WHAT NURSEBRIDGE SUPPORTS ── -->
+<section class="supports-section" id="supports">
+  <div class="section-inner">
+    <div class="section-label" style="color:var(--sage)">What We Address</div>
+    <h2 class="supports-title">NurseBridge supports students<br>across the full spectrum of readiness</h2>
+    <p class="supports-intro">A comprehensive platform built for the realities nursing students face — clinical, emotional, and systemic.</p>
+    <div class="supports-grid">
+
+      <div class="supports-group">
+        <div class="supports-group-label">Emotional Wellbeing</div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">Burnout Prevention</div></div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">Stress & Anxiety Recognition</div></div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">Emotional Regulation</div></div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">Imposter Syndrome</div></div>
+      </div>
+
+      <div class="supports-group">
+        <div class="supports-group-label">Academic & Executive Function</div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">Procrastination & Follow-Through</div></div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">Perfectionism</div></div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">Avoidance Behaviors</div></div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">ADHD / Executive Function Support</div></div>
+      </div>
+
+      <div class="supports-group">
+        <div class="supports-group-label">Transition & Stabilization</div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">Clinical Transition Stress</div></div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">NCLEX Stress & Test Anxiety</div></div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">Academic-Life Stabilization</div></div>
+        <div class="support-item"><div class="support-dot"></div><div class="support-text">Self-Advocacy & Help-Seeking</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── OUTCOMES SECTION ── -->
+<section class="outcomes-section">
+  <div class="outcomes-inner">
+
+    <div class="outcomes-header">
+      <div>
+        <div class="outcomes-label">Why Schools Implement NurseBridge</div>
+        <h2 class="outcomes-title">Built for<br><em>retention</em> and<br>readiness.</h2>
+      </div>
+      <div class="outcomes-context">
+        NurseBridge is designed for nursing programs that want to be proactive — not reactive — about student stability. The platform gives faculty and coordinators structured, early visibility into where students are before attrition becomes the answer.
+      </div>
+    </div>
+
+    <div class="outcomes-grid">
+
+      <div class="outcome-item">
+        <div class="outcome-rule"></div>
+        <div class="outcome-number">01</div>
+        <div class="outcome-phrase">Nursing School Transition Support</div>
+        <div class="outcome-detail">Helping students understand how real-life responsibilities, emotional strain, academic pressure, and clinical expectations interact during nursing school — and why these experiences can feel overwhelming even when they are common.</div>
+      </div>
+
+      <div class="outcome-item">
+        <div class="outcome-rule"></div>
+        <div class="outcome-number">02</div>
+        <div class="outcome-phrase">Stress, Anxiety & Burnout Recognition</div>
+        <div class="outcome-detail">Helping students identify the difference between temporary stress, escalating anxiety, emotional exhaustion, avoidance, and burnout patterns before they begin disrupting performance, confidence, or wellbeing.</div>
+      </div>
+
+      <div class="outcome-item">
+        <div class="outcome-rule"></div>
+        <div class="outcome-number">03</div>
+        <div class="outcome-phrase">Naming the Experience</div>
+        <div class="outcome-detail">Giving language to the things many students silently experience — overwhelm, imposter syndrome, perfectionism, procrastination, fear of failure, emotional shutdown, and academic avoidance — so they become recognizable instead of frightening.</div>
+      </div>
+
+      <div class="outcome-item">
+        <div class="outcome-rule"></div>
+        <div class="outcome-number">04</div>
+        <div class="outcome-phrase">Early Intervention Before Derailment</div>
+        <div class="outcome-detail">Helping students recognize patterns early enough to take proactive steps, access support, adjust strategies, and stabilize before those patterns begin affecting academics, clinical performance, relationships, or persistence in the program.</div>
+      </div>
+
+    </div>
+
+    <!-- Platform Language -->
+    <div class="platform-language">
+      <div class="platform-language-rule"></div>
+      <div class="platform-language-body">
+        <p>NurseBridge is not a guarantee of academic success, nor is it a replacement for studying, skill development, accountability, or support services.</p>
+        <p>The purpose of these tools is to help students better recognize stress, anxiety, burnout, overwhelm, avoidance, perfectionism, and other patterns that can quietly interfere with academic performance, emotional wellbeing, confidence, and decision-making.</p>
+        <p>Many of these experiences are common in high-pressure learning environments and demanding career pathways like nursing education. Putting language to them can make them feel less frightening, more understandable, and easier to address proactively.</p>
+        <p>The goal is not perfection. The goal is earlier recognition, healthier responses, and better stabilization before these patterns begin disrupting academics, relationships, health, or long-term goals.</p>
+        <p>Whether a student successfully completes nursing school or not, many of these tools and frameworks can remain useful throughout life, future education, professional practice, and periods of personal stress or transition.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SECTION 3: FIRE → ASH DEMO ── -->
+<section class="demo-section" id="demo-burnout">
+  <div class="section-inner">
+    <div class="demo-header">
+      <div>
+        <div class="demo-badge">Featured Demo · 01</div>
+        <h2 class="demo-title"><em>FIRE</em> → ASH™</h2>
+        <div class="demo-subtitle">Burnout Recognition & Early Intervention</div>
+        <p class="demo-desc">
+          The flagship NurseBridge assessment — designed to help students recognize burnout patterns before they become crises. Grounded in clinical burnout frameworks adapted for nursing student life.
+        </p>
+        <ul class="demo-features">
+          <li>Adaptive 5-item burnout self-assessment</li>
+          <li>Visual burnout stage progression indicator</li>
+          <li>Personalized reflection and intervention guidance</li>
+          <li>Integrated faculty early-alert system (full version)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- INTERACTIVE WINDOW -->
+    <div class="demo-window">
+      <div class="window-chrome">
+        <div class="window-dot wd-red"></div>
+        <div class="window-dot wd-yellow"></div>
+        <div class="window-dot wd-green"></div>
+        <div class="window-url">nursebridgeedu.com / tools / fire-ash</div>
+        <div class="window-demo-tag">Demo Preview</div>
+      </div>
+      <div class="window-body">
+        <div class="fire-ash">
+          <div class="fire-ash-header">
+            <span class="fire-ash-icon">🔥</span>
+            <div class="fire-ash-title">FIRE <span>→</span> ASH™</div>
+            <div class="fire-ash-intro">A brief burnout recognition check-in. Select the number that best reflects your experience over the past two weeks.</div>
+          </div>
+
+          <!-- Meter -->
+          <div class="burnout-meter">
+            <div class="bst-track">
+              <div class="bst-segment" id="seg0" data-stage="0">
+                <div class="bst-bar"></div>
+                <div class="bst-label">Spark</div>
+              </div>
+              <div class="bst-segment" id="seg1" data-stage="1">
+                <div class="bst-bar"></div>
+                <div class="bst-label">Smoke</div>
+              </div>
+              <div class="bst-segment" id="seg2" data-stage="2">
+                <div class="bst-bar"></div>
+                <div class="bst-label">Fire</div>
+              </div>
+              <div class="bst-segment" id="seg3" data-stage="3">
+                <div class="bst-bar"></div>
+                <div class="bst-label">Ash</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fa-questions">
+            <!-- Q1 -->
+            <div class="fa-question">
+              <div class="fa-q-text">I feel emotionally exhausted by my nursing coursework and clinical demands.</div>
+              <div class="fa-scale" data-q="0">
+                <div class="fa-btn" data-val="1">1</div>
+                <div class="fa-btn" data-val="2">2</div>
+                <div class="fa-btn" data-val="3">3</div>
+                <div class="fa-btn" data-val="4">4</div>
+                <div class="fa-btn" data-val="5">5</div>
+              </div>
+              <div class="fa-scale-labels"><span>Rarely</span><span>Always</span></div>
+            </div>
+            <!-- Q2 -->
+            <div class="fa-question">
+              <div class="fa-q-text">I have difficulty caring about my performance the way I used to.</div>
+              <div class="fa-scale" data-q="1">
+                <div class="fa-btn" data-val="1">1</div>
+                <div class="fa-btn" data-val="2">2</div>
+                <div class="fa-btn" data-val="3">3</div>
+                <div class="fa-btn" data-val="4">4</div>
+                <div class="fa-btn" data-val="5">5</div>
+              </div>
+              <div class="fa-scale-labels"><span>Rarely</span><span>Always</span></div>
+            </div>
+            <!-- Q3 -->
+            <div class="fa-question">
+              <div class="fa-q-text">I feel disconnected from the reason I chose nursing.</div>
+              <div class="fa-scale" data-q="2">
+                <div class="fa-btn" data-val="1">1</div>
+                <div class="fa-btn" data-val="2">2</div>
+                <div class="fa-btn" data-val="3">3</div>
+                <div class="fa-btn" data-val="4">4</div>
+                <div class="fa-btn" data-val="5">5</div>
+              </div>
+              <div class="fa-scale-labels"><span>Rarely</span><span>Always</span></div>
+            </div>
+            <!-- Q4 -->
+            <div class="fa-question">
+              <div class="fa-q-text">Sleep, nutrition, or exercise have suffered because of my workload.</div>
+              <div class="fa-scale" data-q="3">
+                <div class="fa-btn" data-val="1">1</div>
+                <div class="fa-btn" data-val="2">2</div>
+                <div class="fa-btn" data-val="3">3</div>
+                <div class="fa-btn" data-val="4">4</div>
+                <div class="fa-btn" data-val="5">5</div>
+              </div>
+              <div class="fa-scale-labels"><span>Rarely</span><span>Always</span></div>
+            </div>
+            <!-- Q5 -->
+            <div class="fa-question">
+              <div class="fa-q-text">I doubt whether I have what it takes to complete this program.</div>
+              <div class="fa-scale" data-q="4">
+                <div class="fa-btn" data-val="1">1</div>
+                <div class="fa-btn" data-val="2">2</div>
+                <div class="fa-btn" data-val="3">3</div>
+                <div class="fa-btn" data-val="4">4</div>
+                <div class="fa-btn" data-val="5">5</div>
+              </div>
+              <div class="fa-scale-labels"><span>Rarely</span><span>Always</span></div>
+            </div>
+          </div>
+
+          <!-- Result -->
+          <div class="fa-result" id="faResult">
+            <div class="fa-result-icon" id="faIcon">🌱</div>
+            <div>
+              <div class="fa-result-level" id="faLevel">Assessment Complete</div>
+              <div class="fa-result-title" id="faTitle">—</div>
+              <div class="fa-result-text" id="faText">—</div>
+            </div>
+          </div>
+          <div class="fa-context-note" id="faContextNote">
+            <div class="fa-context-note-text">
+              This reflection is an educational awareness tool, not a clinical or medical assessment. Results are intended to support recognition and reflection — not to diagnose, evaluate, or replace professional support. If you are experiencing emotional distress or a mental health concern, please reach out to a counselor, physician, or mental health professional.
+            </div>
+          </div>
+          <button class="fa-reset" id="faReset" onclick="resetFireAsh()">Start Over</button>
+        </div>
+      </div>
+    </div>
+    <!-- Abbreviated tool disclaimer -->
+    <div class="tool-disclaimer">
+      <div class="tool-disclaimer-text">
+        <strong>Educational tool.</strong> The FIRE → ASH™ framework is designed to support awareness and early recognition — not to diagnose burnout or any medical or mental health condition. If you are experiencing distress, please speak with a counselor, physician, or mental health professional.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 4: STRESS OR ANXIETY CHECK-IN DEMO ── -->
+<section class="demo-section" id="demo-stress">
+  <div class="section-inner">
+    <div class="demo-header">
+      <div>
+        <div class="demo-badge">Featured Demo · 02</div>
+        <h2 class="demo-title">Stress or Anxiety<br><em>Check-In™</em></h2>
+        <div class="demo-subtitle">Interactive Reflection + Journal Experience</div>
+        <p class="demo-desc">
+          A practical daily-use tool helping students distinguish between situational stress and anxiety patterns — and respond with targeted, evidence-informed strategies.
+        </p>
+        <ul class="demo-features">
+          <li>Stress symptom checklist (somatic & cognitive)</li>
+          <li>Anxiety mapping across multiple dimensions</li>
+          <li>Guided journal prompt with reflection framework</li>
+          <li>Personalized intervention guidance</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="demo-window">
+      <div class="window-chrome">
+        <div class="window-dot wd-red"></div>
+        <div class="window-dot wd-yellow"></div>
+        <div class="window-dot wd-green"></div>
+        <div class="window-url">nursebridgeedu.com / tools / stress-checkin</div>
+        <div class="window-demo-tag">Demo Preview</div>
+      </div>
+      <div class="window-body">
+        <div class="stress-checkin">
+          <!-- Tabs -->
+          <div class="sc-tabs">
+            <div class="sc-tab active" onclick="switchTab(0)">Stress Checklist</div>
+            <div class="sc-tab" onclick="switchTab(1)">Anxiety Scale</div>
+            <div class="sc-tab" onclick="switchTab(2)">Journal</div>
+          </div>
+
+          <!-- Panel 1: Stress Checklist -->
+          <div class="sc-panel active" id="scPanel0">
+            <div class="sc-heading">What are you noticing right now?</div>
+            <div class="sc-subheading">Check everything that applies — even if it feels small.</div>
+            <div class="sc-checklist">
+              <div class="sc-check-item" onclick="toggleCheck(this)">
+                <div class="sc-checkbox"></div>
+                <div class="sc-check-label">Trouble concentrating or staying focused</div>
+              </div>
+              <div class="sc-check-item" onclick="toggleCheck(this)">
+                <div class="sc-checkbox"></div>
+                <div class="sc-check-label">Racing thoughts or mental restlessness</div>
+              </div>
+              <div class="sc-check-item" onclick="toggleCheck(this)">
+                <div class="sc-checkbox"></div>
+                <div class="sc-check-label">Physical tension (jaw, shoulders, stomach)</div>
+              </div>
+              <div class="sc-check-item" onclick="toggleCheck(this)">
+                <div class="sc-checkbox"></div>
+                <div class="sc-check-label">Feeling behind or overwhelmed by tasks</div>
+              </div>
+              <div class="sc-check-item" onclick="toggleCheck(this)">
+                <div class="sc-checkbox"></div>
+                <div class="sc-check-label">Avoiding something you know you need to do</div>
+              </div>
+              <div class="sc-check-item" onclick="toggleCheck(this)">
+                <div class="sc-checkbox"></div>
+                <div class="sc-check-label">Sleep disruption or fatigue</div>
+              </div>
+              <div class="sc-check-item" onclick="toggleCheck(this)">
+                <div class="sc-checkbox"></div>
+                <div class="sc-check-label">Irritability or emotional reactivity</div>
+              </div>
+            </div>
+            <div class="sc-summary-bar">
+              <div class="sc-summary-text">Symptoms selected</div>
+              <div class="sc-summary-count" id="checkCount">0</div>
+            </div>
+          </div>
+
+          <!-- Panel 2: Anxiety Scale -->
+          <div class="sc-panel" id="scPanel1">
+            <div class="sc-heading">Rate your experience this week</div>
+            <div class="sc-subheading">1 = Not at all · 5 = Almost every day</div>
+            <br>
+            <div class="sc-scale-row">
+              <div class="sc-scale-label">Feeling nervous, anxious, or on edge</div>
+              <div class="sc-scale-btns" data-aq="0">
+                <div class="sc-scale-btn" onclick="selectScale(this,0)">1</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,0)">2</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,0)">3</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,0)">4</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,0)">5</div>
+              </div>
+              <div class="sc-scale-range"><span>Not at all</span><span>Almost daily</span></div>
+            </div>
+            <div class="sc-scale-row">
+              <div class="sc-scale-label">Worrying about things in a way that's hard to control</div>
+              <div class="sc-scale-btns" data-aq="1">
+                <div class="sc-scale-btn" onclick="selectScale(this,1)">1</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,1)">2</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,1)">3</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,1)">4</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,1)">5</div>
+              </div>
+              <div class="sc-scale-range"><span>Not at all</span><span>Almost daily</span></div>
+            </div>
+            <div class="sc-scale-row">
+              <div class="sc-scale-label">Feeling so restless it's hard to sit still</div>
+              <div class="sc-scale-btns" data-aq="2">
+                <div class="sc-scale-btn" onclick="selectScale(this,2)">1</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,2)">2</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,2)">3</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,2)">4</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,2)">5</div>
+              </div>
+              <div class="sc-scale-range"><span>Not at all</span><span>Almost daily</span></div>
+            </div>
+            <div class="sc-scale-row">
+              <div class="sc-scale-label">Feeling afraid that something terrible might happen</div>
+              <div class="sc-scale-btns" data-aq="3">
+                <div class="sc-scale-btn" onclick="selectScale(this,3)">1</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,3)">2</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,3)">3</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,3)">4</div>
+                <div class="sc-scale-btn" onclick="selectScale(this,3)">5</div>
+              </div>
+              <div class="sc-scale-range"><span>Not at all</span><span>Almost daily</span></div>
+            </div>
+          </div>
+
+          <!-- Panel 3: Journal -->
+          <div class="sc-panel" id="scPanel2">
+            <div class="sc-heading">Guided Reflection</div>
+            <div class="sc-subheading">Take 3–5 minutes. There are no wrong answers here.</div>
+            <div class="sc-journal-prompt">
+              What is the one thing weighing on you most right now — and if it weren't there, what would feel different?
+            </div>
+            <textarea class="sc-journal-area" placeholder="Write freely here... this space is yours." id="journalArea" oninput="checkJournal()"></textarea>
+            <button class="sc-reveal-btn" id="scRevealBtn" onclick="showGuidance()" style="display:none;">See Reflection Guidance</button>
+            <div class="sc-guidance" id="scGuidance">
+              <strong>Thank you for naming that.</strong> What you've described often points to a stress response that's been active longer than you realize. This is information, not weakness. The full NurseBridge experience will guide you through grounding strategies, a follow-up check-in, and — if helpful — a pathway to connect with your program's support team. You don't have to carry this alone.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Abbreviated tool disclaimer -->
+    <div class="tool-disclaimer">
+      <div class="tool-disclaimer-text">
+        <strong>Educational tool.</strong> The Stress or Anxiety Check-In™ is designed to support reflection and self-awareness — not to diagnose stress, anxiety, or any medical or mental health condition. If you are experiencing emotional distress or a mental health concern, please reach out to a qualified professional.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 5: GUIDED ORIENTATION ── -->
+<section class="orientation-section" id="orientation">
+  <div class="section-inner">
+    <div class="demo-badge" style="color:var(--sage);background:rgba(90,128,104,0.1);border-color:rgba(90,128,104,0.3);">Program Feature</div>
+    <div class="orientation-grid">
+      <div>
+        <div class="section-label" style="color:var(--sage);">Guided Pre-Orientation Session</div>
+        <h2 class="orientation-title">This is not a PDF.<br>This is a program.</h2>
+        <p class="orientation-desc">
+          NurseBridge delivers a structured 1–2 hour guided pre-orientation session, designed to be completed before students ever set foot in their first clinical rotation. It prepares them emotionally and cognitively for what's ahead.
+        </p>
+        <ul class="orientation-points">
+          <li>
+            <div class="ori-num">1</div>
+            <div>
+              <strong>Guided orientation and platform walkthrough</strong>
+              <div class="ori-point-detail">Students are introduced to NurseBridge, the structure of the program, and how the tools are intended to be used throughout periods of stress, transition, and academic pressure.</div>
+            </div>
+          </li>
+          <li>
+            <div class="ori-num">2</div>
+            <div>
+              <strong>FIRE → ASH™ baseline assessment</strong>
+              <div class="ori-point-detail">Students complete an initial burnout and strain recognition check-in designed to establish a personal baseline before coursework and clinical demands intensify.</div>
+            </div>
+          </li>
+          <li>
+            <div class="ori-num">3</div>
+            <div>
+              <strong>Stress or Anxiety Check-In™ experience</strong>
+              <div class="ori-point-detail">Students complete an interactive reflection and journal exercise focused on recognizing stress, anxiety, overwhelm, and emotional escalation patterns.</div>
+            </div>
+          </li>
+          <li>
+            <div class="ori-num">4</div>
+            <div>
+              <strong>Support navigation and stabilization strategies</strong>
+              <div class="ori-point-detail">Students are introduced to practical support frameworks, self-advocacy strategies, and early intervention concepts designed to help prevent silent spiraling and disengagement.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="orientation-card">
+        <div class="ori-card-label">Session Structure</div>
+        <div class="ori-session-items">
+          <div class="ori-session-item">
+            <div class="ori-session-icon">🧭</div>
+            <div>
+              <div class="ori-session-name">Program Welcome & Orientation</div>
+              <div class="ori-session-detail">What NurseBridge is, why it exists, and how students navigate it</div>
+            </div>
+          </div>
+          <div class="ori-session-item">
+            <div class="ori-session-icon">🔥</div>
+            <div>
+              <div class="ori-session-name">FIRE → ASH™ Baseline Assessment</div>
+              <div class="ori-session-detail">Establishing a burnout baseline before the program begins</div>
+            </div>
+          </div>
+          <div class="ori-session-item">
+            <div class="ori-session-icon">🧠</div>
+            <div>
+              <div class="ori-session-name">Stress or Anxiety Check-In™</div>
+              <div class="ori-session-detail">First reflection and guided journal experience</div>
+            </div>
+          </div>
+          <div class="ori-session-item">
+            <div class="ori-session-icon">🤝</div>
+            <div>
+              <div class="ori-session-name">Help-Seeking & Self-Advocacy Skills</div>
+              <div class="ori-session-detail">Normalizing support and identifying when to reach out</div>
+            </div>
+          </div>
+          <div class="ori-session-item">
+            <div class="ori-session-icon">📋</div>
+            <div>
+              <div class="ori-session-name">Expectation & Stabilization Framework</div>
+              <div class="ori-session-detail">Setting the stage for a sustainable nursing school experience</div>
+            </div>
+          </div>
+        </div>
+        <div class="ori-duration">⏱ Estimated Session Time: 1–2 Hours · Self-Paced or Facilitated</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DISCLAIMER SECTION ── -->
+<section class="disclaimer-section">
+  <div class="disclaimer-inner">
+
+    <div class="disclaimer-eyebrow">About These Tools</div>
+
+    <p class="disclaimer-intro">
+      NurseBridge tools are educational and care-management support frameworks. They are designed to help students better recognize, understand, and reflect on stress, burnout progression, overwhelm, avoidance patterns, emotional strain, and related experiences common in high-pressure educational environments.
+    </p>
+
+    <div class="disclaimer-panels">
+
+      <div class="disclaimer-panel">
+        <div class="disclaimer-panel-rule"></div>
+        <div class="disclaimer-panel-title">Educational Purpose</div>
+        <div class="disclaimer-panel-body">
+          These tools are designed to support awareness, reflection, and early recognition — not to provide clinical assessment, scoring, or evaluation. Recognition and reflection are the beginning of a supportive process, not the end of one.
+        </div>
+      </div>
+
+      <div class="disclaimer-panel">
+        <div class="disclaimer-panel-rule coral"></div>
+        <div class="disclaimer-panel-title">Not Diagnostic Tools</div>
+        <div class="disclaimer-panel-body">
+          These tools are not intended to diagnose medical conditions, mental health conditions, or psychological disorders of any kind. Awareness of a pattern is not a clinical diagnosis. Reflecting on an experience is not a substitute for professional evaluation.
+        </div>
+      </div>
+
+      <div class="disclaimer-panel">
+        <div class="disclaimer-panel-rule teal"></div>
+        <div class="disclaimer-panel-title">Professional Support</div>
+        <div class="disclaimer-panel-body">
+          Recognition and awareness do not replace medical evaluation, therapy, counseling, psychiatric care, or emergency intervention when those are needed. Students are always encouraged to seek appropriate professional support when they need it.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="disclaimer-support-block">
+      <div class="disclaimer-support-icon">🤝</div>
+      <div>
+        <div class="disclaimer-support-title">When to Seek Professional Support</div>
+        <div class="disclaimer-support-body">
+          If you are experiencing medical concerns, mental health concerns, emotional crisis, thoughts of self-harm, or feel unsafe in any way — please reach out to a qualified professional. You do not have to navigate this alone, and support is available.
+        </div>
+        <div class="disclaimer-support-resources">
+          <span class="disclaimer-resource-tag">Your Physician or PCP</span>
+          <span class="disclaimer-resource-tag">Counselor or Therapist</span>
+          <span class="disclaimer-resource-tag">Mental Health Professional</span>
+          <span class="disclaimer-resource-tag">Campus Wellness Services</span>
+          <span class="disclaimer-resource-tag">Emergency Department</span>
+          <span class="disclaimer-resource-tag">Emergency Services (911)</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SECTION 6: CTA ── -->
+<section class="cta-section" id="contact">
+  <div class="cta-bg"></div>
+  <div class="cta-accent"></div>
+  <!-- Gradient drift layers -->
+  <div class="drift-layer cta-drift-a"></div>
+  <div class="drift-layer cta-drift-b"></div>
+  <div class="drift-layer cta-drift-c"></div>
+  <div class="cta-content">
+    <div class="cta-eyebrow">Ready to Explore NurseBridge?</div>
+    <h2 class="cta-title">Support students<br>before they <em>need</em> support</h2>
+    <p class="cta-body">
+      NurseBridge is available as an institutional platform, a pilot program, or a standalone pre-orientation module. We work with nursing schools, hospital systems, and academic partnerships.
+    </p>
+    <div class="cta-buttons">
+      <a href="mailto:info@nursebridgeedu.com" class="btn-primary">Request Full Walkthrough</a>
+      <a href="mailto:info@nursebridgeedu.com" class="btn-outline">Schedule Faculty Preview</a>
+      <a href="mailto:info@nursebridgeedu.com" class="btn-ghost">Learn About Pilot Access</a>
+    </div>
+    <div class="cta-divider"></div>
+    <div class="cta-footnote">
+      nursebridgeedu.com &nbsp;·&nbsp; Explore Institutional Access &nbsp;·&nbsp; Faculty & Program Coordinators<br>
+      Contents are proprietary to NurseBridge™. Demo access is provided for evaluation purposes only.
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-brand">Nurse<span>Bridge</span>™</div>
+  <div class="footer-copy">© 2025 NurseBridge. All rights reserved.</div>
+  <div class="footer-domain">nursebridgeedu.com</div>
+</footer>
+
+<script>
+// ── FIRE → ASH LOGIC ──
+const faAnswers = [0, 0, 0, 0, 0];
+
+// Event delegation — robust across all rendering contexts
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.fa-btn');
+  if (!btn) return;
+  const scale = btn.closest('.fa-scale');
+  if (!scale) return;
+  const qi = parseInt(scale.dataset.q);
+  scale.querySelectorAll('.fa-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  faAnswers[qi] = parseInt(btn.dataset.val);
+  updateBurnoutMeter();
+});
+
+function getStageFromAverage(avg) {
+  // Conservative ceiling escalation — borderline scores move upward
+  const ceiled = Math.ceil(avg * 10) / 10;
+  if (ceiled < 2.0) return 0;  // Spark
+  if (ceiled < 3.0) return 1;  // Smoke
+  if (ceiled < 4.0) return 2;  // Fire
+  return 3;                     // Ash
+}
+
+function updateBurnoutMeter() {
+  const answered = faAnswers.filter(v => v > 0).length;
+  if (answered === 0) return;
+
+  if (answered === faAnswers.length) {
+    const total = faAnswers.reduce((a, b) => a + b, 0);
+    const avg   = total / answered;
+    const stage = getStageFromAverage(avg);
+
+    // Only reveal segments once all questions are answered
+    [0, 1, 2, 3].forEach(i => {
+      const seg = document.getElementById('seg' + i);
+      seg.classList.remove('active', 'passed');
+      if (i === stage)    seg.classList.add('active');
+      else if (i < stage) seg.classList.add('passed');
+    });
+
+    showFireAshResult(stage);
+  }
+}
+
+function showFireAshResult(stage) {
+  const result = document.getElementById('faResult');
+  const icon   = document.getElementById('faIcon');
+  const level  = document.getElementById('faLevel');
+  const title  = document.getElementById('faTitle');
+  const text   = document.getElementById('faText');
+
+  const stages = [
+    {
+      icon:  '✦',
+      level: 'Stage 1 — Spark',
+      title: 'Pressure Building, Manageable',
+      text:  'Strain is present but within a manageable range. Staying aware of what you are carrying — and recognizing it early — is itself meaningful. Early awareness supports longer-term stability and reduces the likelihood of escalation.'
+    },
+    {
+      icon:  '◌',
+      level: 'Stage 2 — Smoke',
+      title: 'Warning Patterns Emerging',
+      text:  'Early warning signals are becoming visible. This is an important moment — not a crisis, but a meaningful indicator. Recognizing strain at this stage creates real opportunity for early adjustment, grounding, and intentional support before patterns intensify.'
+    },
+    {
+      icon:  '◆',
+      level: 'Stage 3 — Fire',
+      title: 'Pressure Overriding Capacity',
+      text:  'Pressure may be outpacing your ability to manage it effectively. This is a significant and important stage to recognize. Taking time to reflect, stabilize, and access support — whether through people, structured tools, or professional resources — can help prevent further escalation.'
+    },
+    {
+      icon:  '·',
+      level: 'Stage 4 — Ash',
+      title: 'Depletion — Stabilization Needed',
+      text:  'What you are experiencing deserves attention, reflection, stabilization, and support. Earlier recognition creates earlier opportunity for recovery, grounding, and intervention. This is not a permanent state — it is a signal worth taking seriously, and support is available.'
+    }
+  ];
+
+  const data = stages[stage];
+  icon.textContent  = data.icon;
+  level.textContent = data.level;
+  title.textContent = data.title;
+  text.textContent  = data.text;
+  result.classList.add('show');
+  document.getElementById('faContextNote').classList.add('show');
+  document.getElementById('faReset').classList.add('show');
+}
+
+function resetFireAsh() {
+  faAnswers.fill(0);
+  document.querySelectorAll('.fa-btn').forEach(b => b.classList.remove('selected'));
+  [0, 1, 2, 3].forEach(i => {
+    const seg = document.getElementById('seg' + i);
+    seg.classList.remove('active', 'passed');
+  });
+  document.getElementById('faResult').classList.remove('show');
+  document.getElementById('faContextNote').classList.remove('show');
+  document.getElementById('faReset').classList.remove('show');
+}
+
+// ── STRESS CHECK-IN LOGIC ──
+function switchTab(idx) {
+  document.querySelectorAll('.sc-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.sc-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  const cb = el.querySelector('.sc-checkbox');
+  if (el.classList.contains('checked')) {
+    cb.textContent = '✓';
+  } else {
+    cb.textContent = '';
+  }
+  const count = document.querySelectorAll('.sc-check-item.checked').length;
+  document.getElementById('checkCount').textContent = count;
+}
+
+function selectScale(btn, qi) {
+  const btns = btn.closest('.sc-scale-btns').querySelectorAll('.sc-scale-btn');
+  btns.forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function checkJournal() {
+  const val = document.getElementById('journalArea').value.trim();
+  const btn = document.getElementById('scRevealBtn');
+  btn.style.display = val.length > 20 ? 'block' : 'none';
+}
+
+function showGuidance() {
+  document.getElementById('scGuidance').classList.add('show');
+  document.getElementById('scRevealBtn').style.display = 'none';
+}
+</script>
+</body>
+</html>
